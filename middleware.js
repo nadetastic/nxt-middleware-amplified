@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { Amplify, Auth } from 'aws-amplify';
+import { Amplify, withSSRContext} from 'aws-amplify';
 import awsExports from './src/aws-exports';
 Amplify.configure({...awsExports, ssr: true});
  
@@ -20,8 +20,10 @@ export const config = {
 
 
 const currentUser = async () => {
+
+    const SSR = withSSRContext();
     try {
-        const user = await Auth.currentAuthenticatedUser();
+        const user = await SSR.Auth.currentAuthenticatedUser();
         // return user;
         console.log(user)
     
